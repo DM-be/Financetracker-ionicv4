@@ -1,9 +1,25 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>signin</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content padding>
-
+  <ion-grid fixed>
+    <ion-row>
+    </ion-row>
+    <ion-row>
+      <ion-col showWhen="android,ios" style="margin: auto;" col-12>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="person"></ion-icon>
+            </ion-label>
+            <ion-input type="text" [(ngModel)]="email" placeholder="email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>
+              <ion-icon name="lock"></ion-icon>
+            </ion-label>
+            <ion-input type="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+          </ion-item>
+        </ion-list>
+        <ion-button shape="round" color="primary" fill="outline" (click)="login()">Login</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

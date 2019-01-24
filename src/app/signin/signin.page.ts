@@ -1,4 +1,6 @@
+import { AuthService } from './../shared/services/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -6,10 +8,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./signin.page.scss'],
 })
 export class SigninPage implements OnInit {
-
-  constructor() { }
+  public email: string;
+  public password: string;
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  async login() {
+    try {
+      await this.authService.signInWithEmail(this.email, this.password);
+      this.router.navigateByUrl("/tabs");
+    } catch (err) {}
   }
 
 }
