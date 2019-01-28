@@ -7,6 +7,47 @@
 </ion-header>
 
 <ion-content>
+
+    <ion-card>
+
+        <ion-item-divider color="primary">
+          Categories
+        </ion-item-divider>
+  
+        <ion-list>
+  
+          <div *ngFor="let category of categories$ | async">
+            <ion-item-sliding>
+              <ion-item tappable>
+                <ion-icon [name]="category?.categoryIcon"></ion-icon>
+                {{category.categoryName}}
+                <ion-badge item-end>{{getAmountSpentInCategory(category)}}</ion-badge>
+              </ion-item>
+              <ion-item-options>
+                <button ion-button color="dark">
+                  <ion-icon name="create"></ion-icon>
+                  Edit
+                </button>
+              </ion-item-options>
+              <ion-item-options>
+                <button ion-button color="danger">
+                  <ion-icon name="trash"></ion-icon>
+                  Delete
+                </button>
+              </ion-item-options>
+  
+            </ion-item-sliding>
+         
+  
+  
+  
+          </div>
+        </ion-list>
+  
+  </ion-card>
+
+
+
   <ion-fab bottom right>
     <button color="tertiary" ion-fab>
       <ion-icon name="add"></ion-icon>

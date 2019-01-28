@@ -12,14 +12,14 @@ import { firestore } from "firebase";
 export class FirestoreService {
   constructor(private _firestore: AngularFirestore) {}
 
-  public getFilteredCollectionBetweenDates(
+  public getFilteredCollectionObservableBetweenDates(
     collection: string,
     start: string,
     end: string
-  ): AngularFirestoreCollection {
+  ): Observable<any []> {
     return this._firestore.collection(collection, ref =>
       ref.where("date", ">", start).where("date", "<", end).orderBy('date')
-    );
+    ).valueChanges();
   }
 
   public async addToCollection(collection: string, object: any): Promise<void> {
@@ -28,6 +28,10 @@ export class FirestoreService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  public getCollectionObservable(collection: string): Observable<any []> {
+    return this._firestore.collection(collection).valueChanges();
   }
 
 

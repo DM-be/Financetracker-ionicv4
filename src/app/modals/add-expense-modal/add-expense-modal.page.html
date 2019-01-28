@@ -2,19 +2,20 @@
 <ion-content padding>
   <ion-grid fixed>
       <ion-item>
-        <ion-label>Category</ion-label>
+        <ion-label position="floating">Category</ion-label>
       </ion-item>
-      <ion-item item-end>
+      <ion-item>
 
       </ion-item>
-      <ion-item item-end>
+      <ion-item position="fixed">
         <ion-label>Date</ion-label>
+        <ion-datetime  displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="expense.createdDate" name="date"></ion-datetime>
       </ion-item>
-      <ion-item item-end>
-        <ion-label>Description</ion-label>
+      <ion-item>
+        <ion-label position="floating" >Description</ion-label>
         <ion-input text-right [(ngModel)]="expense.description" name="description"></ion-input>
       </ion-item>
-      <ion-item item-end>
+      <ion-item>
         <ion-label>Cost</ion-label>
       </ion-item>
     <ion-button icon-only full no-margin >

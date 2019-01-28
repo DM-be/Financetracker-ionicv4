@@ -1,3 +1,4 @@
+import { MomentService } from './../../shared/services/moment/moment.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,12 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddExpenseModalPage implements OnInit {
 
+  
   public expense = {
-    description: ""
+    description: "",
+    createdDate: ""
+
   }
-  constructor() { }
+
+
+  constructor(private momentService: MomentService) { }
 
   ngOnInit() {
+    this.expense.createdDate = this.momentService.getCurrentDateObject().toISOString();
   }
 
 }

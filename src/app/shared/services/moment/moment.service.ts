@@ -38,4 +38,8 @@ export class MomentService {
     return moment(this.selectedDate).endOf('month').toDate();
   }
 
+  getCurrentDateObject(): moment.Moment{
+    return moment();
+  }
+
 }
