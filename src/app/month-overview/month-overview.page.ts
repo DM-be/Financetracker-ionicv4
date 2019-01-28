@@ -40,4 +40,11 @@ export class MonthOverviewPage
     return 200;
   }
 
+  deleteCategory(category: Category) {
+    console.log(category)
+  }
+
+
+
+
 }

@@ -22,4 +22,5 @@ export class AddExpenseModalPage implements OnInit {
     this.expense.createdDate = this.momentService.getCurrentDateObject().toISOString();
   }
 
+  
 }
