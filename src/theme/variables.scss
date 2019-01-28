@@ -74,4 +74,68 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+
+
+}
+
+// credit https://forum.ionicframework.com/t/dynamic-modal-height-based-on-content/100732
+.custom-modal {
+  @media (min-height: 500px) {
+    ion-backdrop {
+      visibility: visible;
+    }
+  }
+
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: --z-index-overlay;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  contain: strict;
+  .modal-wrapper {
+    &,
+    .ion-page,
+    .ion-page .content,
+    .ion-page .content .scroll-content {
+      contain: content;
+      position: relative;
+      top: auto;
+      left: auto;
+      padding:0px;
+
+    }
+
+    z-index: --z-index-overlay-wrapper;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    max-height: --alert-max-height;
+    opacity: 0;
+    height: auto;
+    max-width: --alert-md-max-width;
+    border-radius: --alert-md-border-radius;
+    background-color: --alert-md-background-color;
+    box-shadow: --alert-md-box-shadow;
+    border-radius: 2px;
+    padding:0px;
+    
+
+    .ion-page .content {
+      background-color: color(--colors, light);
+      
+    }
+
+    .customScroll {
+      max-height: 15vh;
+      overflow-y: scroll;
+    }
+  }
 }

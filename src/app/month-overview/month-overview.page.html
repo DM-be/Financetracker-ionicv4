@@ -1,0 +1,21 @@
+
+<ion-header>
+  <ion-item color="tertiary">
+    <ion-datetime displayFormat="MMMM YYYY" pickerFormat="MMMM YYYY" [(ngModel)]="momentService.selectedDate" (ionChange)="updateObservables()"
+     ></ion-datetime>
+  </ion-item>
+</ion-header>
+
+<ion-content>
+  <ion-fab bottom right>
+    <button color="tertiary" ion-fab>
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="left">
+      <button (click)="addExpenseModal()" ion-fab icon-only>
+        <ion-icon name="pricetag"></ion-icon>
+      </button>
+   
+    </ion-fab-list>
+</ion-fab>
+</ion-content>
