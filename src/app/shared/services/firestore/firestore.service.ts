@@ -14,11 +14,24 @@ export class FirestoreService {
 
   public getFilteredCollectionObservableBetweenDates(
     collection: string,
-    start: string,
-    end: string
+    start: Date,
+    end: Date
   ): Observable<any []> {
     return this._firestore.collection(collection, ref =>
-      ref.where("date", ">", start).where("date", "<", end).orderBy('date')
+      ref.where("created", ">", start).where("created", "<", end).orderBy('created')
+    ).valueChanges();
+  }
+
+  public getFilteredCollectionObservableBetweenDatesAndField(
+    collection: string,
+    start: string,
+    end: string,
+    fieldPath: string,
+    fieldValue: string,
+    opStr: any
+  ): Observable<any []> {
+    return this._firestore.collection(collection, ref =>
+      ref.where("created", ">", start).where("created", "<", end).where(fieldPath, opStr, fieldValue).orderBy('created')
     ).valueChanges();
   }
 
