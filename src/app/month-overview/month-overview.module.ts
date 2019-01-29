@@ -1,3 +1,4 @@
+import { AccountComponent } from './../shared/components/account/account.component';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,8 @@ import { MonthOverviewPage } from './month-overview.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: MonthOverviewPage }])
   ],
-  declarations: [MonthOverviewPage]
+  declarations: [MonthOverviewPage, AccountComponent],
+  entryComponents: [AccountComponent]
+  
 })
 export class MonthOverviewPageModule {}

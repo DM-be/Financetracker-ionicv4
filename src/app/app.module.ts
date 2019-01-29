@@ -14,6 +14,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireFunctionsModule } from '@angular/fire/functions';
 import { FirestoreSettingsToken } from '@angular/fire/firestore';
+import { AccountComponent } from './shared/components/account/account.component';
 // import {Firebase} from '@ionic-native/firebase/ngx';
 @NgModule({
   declarations: [AppComponent],

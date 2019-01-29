@@ -8,55 +8,64 @@
 <ion-content>
 
   <ion-card>
+    <ion-item-divider color="primary">
+      Accounts
+    </ion-item-divider>
+    <ion-list>
+      <div *ngIf="accounts$ | async as accounts; else loading">
+        <div *ngFor="let account of accounts">
+          <app-account [account]="account"></app-account>
+        </div>
+      </div>
+      <ng-template #loading>
+        Loading stuff...
+      </ng-template>
+    </ion-list>
+  </ion-card>
 
+
+
+  <ion-card>
     <ion-item-divider color="primary">
       Categories
     </ion-item-divider>
-
     <ion-list>
-
       <div *ngFor="let category of categories$ | async">
         <ion-item-sliding>
           <ion-item tappable>
             <ion-icon [name]="category.categoryIcon" slot="start"></ion-icon>
             <ion-label>{{category.categoryName}}</ion-label>
-           
+
             <ion-badge slot="end">{{getAmountSpentInCategory(category)}}</ion-badge>
           </ion-item>
-          
-          <ion-item-options side="start" >
+
+          <ion-item-options side="start">
             <ion-item-option mode="ios" color="success">
               <ion-icon name="create"></ion-icon>
             </ion-item-option>
           </ion-item-options>
-
           <ion-item-options side="end">
-            
             <ion-item-option mode="ios" color="danger" (click)="deleteCategory(category)">
               <ion-icon name="trash"></ion-icon>
             </ion-item-option>
           </ion-item-options>
-
         </ion-item-sliding>
-
-
-
-
       </div>
     </ion-list>
-
   </ion-card>
 
 
 
 
-  
-   <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-      <ion-fab-button>
-        <ion-icon name="settings"></ion-icon>
+
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="settings"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+      <ion-fab-button (click)="addExpenseModal()" routerDirection="forward">
+        <ion-icon name="logo-vimeo"></ion-icon>
       </ion-fab-button>
-      <ion-fab-list side="end">
-        <ion-fab-button (click)="addExpenseModal()"><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
-      </ion-fab-list>
-    </ion-fab>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

@@ -1,3 +1,4 @@
+import { Account } from './../shared/models/Account';
 import { Category } from './../shared/models/Category';
 import { AddExpenseModalPage } from './../modals/add-expense-modal/add-expense-modal.page';
 import { FirestoreService } from './../shared/services/firestore/firestore.service';
@@ -15,14 +16,18 @@ export class MonthOverviewPage
 {
 
   private expenses$;
-  public categories$: Observable<Category []>
+  public categories$: Observable<Category []>;
+  public accounts$: Observable<Account []>;
+
 
   constructor(public momentService: MomentService, private firestoreService: FirestoreService, public modalController: ModalController) {
-   this.categories$ = this.firestoreService.getCollectionObservable('categories');
+   this.updateObservables();
     
   }
 
   updateObservables() {
+  this.categories$ = this.firestoreService.getCollectionObservable('categories');
+   this.accounts$ = this.firestoreService.getCollectionObservable('accounts');
     
   }
 
