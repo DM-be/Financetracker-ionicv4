@@ -18,7 +18,7 @@ import { AccountComponent } from './shared/components/account/account.component'
 import { CategoryComponent } from './shared/components/category/category.component';
 // import {Firebase} from '@ionic-native/firebase/ngx';
 @NgModule({
-  declarations: [AppComponent, CategoryComponent],
+  declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

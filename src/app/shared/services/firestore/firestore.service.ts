@@ -24,8 +24,8 @@ export class FirestoreService {
 
   public getFilteredCollectionObservableBetweenDatesAndField(
     collection: string,
-    start: string,
-    end: string,
+    start: Date,
+    end: Date,
     fieldPath: string,
     fieldValue: string,
     opStr: any
@@ -46,6 +46,7 @@ export class FirestoreService {
   public getCollectionObservable(collection: string): Observable<any []> {
     return this._firestore.collection(collection).valueChanges();
   }
+
 
 
 }

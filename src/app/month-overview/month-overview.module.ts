@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MonthOverviewPage } from './month-overview.page';
+import { CategoryComponent } from '../shared/components/category/category.component';
 
 @NgModule({
   imports: [
@@ -13,8 +14,8 @@ import { MonthOverviewPage } from './month-overview.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: MonthOverviewPage }])
   ],
-  declarations: [MonthOverviewPage, AccountComponent],
-  entryComponents: [AccountComponent]
+  declarations: [MonthOverviewPage, AccountComponent, CategoryComponent],
+  entryComponents: [AccountComponent, CategoryComponent]
   
 })
 export class MonthOverviewPageModule {}

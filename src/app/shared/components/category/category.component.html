@@ -3,7 +3,7 @@
     <ion-icon [name]="category.categoryIcon" slot="start"></ion-icon>
     <ion-label>{{category.categoryName}}</ion-label>
 
-    <ion-badge slot="end">{{getAmountSpentInCategory(category)}}</ion-badge>
+    <ion-badge slot="end">{{totalCost}}</ion-badge>
   </ion-item>
 
   <ion-item-options side="start">
@@ -12,7 +12,7 @@
     </ion-item-option>
   </ion-item-options>
   <ion-item-options side="end">
-    <ion-item-option mode="ios" color="danger" (click)="deleteCategory(category)">
+    <ion-item-option mode="ios" color="danger" >
       <ion-icon name="trash"></ion-icon>
     </ion-item-option>
   </ion-item-options>

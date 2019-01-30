@@ -37,9 +37,16 @@ export class MonthOverviewPage implements OnInit {
     this.categories$ = this.firestoreService.getCollectionObservable(
       "categories"
     );
+
     
-    console.log(this.momentService.getEndOfMonthDate().toISOString())
-    this.expenses$.subscribe(data => {if(data) {console.log(data) }})
+    
+    
+    
+  }
+
+  getExpenses$ForCategory(categoryName: string) {
+    return this.firestoreService.getFilteredCollectionObservableBetweenDatesAndField('expenses',   this.momentService.getStartOfMonthDate(),
+    this.momentService.getEndOfMonthDate(), 'categoryName', categoryName, '==' );
   }
 
   ngOnInit() {
