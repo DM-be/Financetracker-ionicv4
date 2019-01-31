@@ -1,5 +1,8 @@
+import { AuthService } from './../../shared/services/auth.service';
+import { Account } from './../../shared/models/Account';
+import { FirestoreService } from './../../shared/services/firestore/firestore.service';
 import { Component, OnInit } from "@angular/core";
-import { NavController, ModalController } from "@ionic/angular";
+import { ModalController } from "@ionic/angular";
 import { SelectIconModalPage } from "../select-icon-modal/select-icon-modal.page";
 
 @Component({
@@ -12,20 +15,18 @@ export class AddAccountModalPage implements OnInit {
   public accountIcon: string;
   public balance: string;
 
-  constructor(public navController: NavController, public modalController: ModalController) {}
+  constructor(public modalController: ModalController, public firestoreService: FirestoreService, private readonly authService: AuthService) {}
 
   ngOnInit() {}
 
-  public dismiss(): void {
-    this.navController.back();
+  public async dismiss(): Promise<void> {
+    await this.modalController.dismiss();
   }
 
   public getSelectedIcon(): string {
     return this.accountIcon || "add-circle";
   }
-
   
-
   public notFilledIn(): boolean {
     return (
       this.balance === undefined ||
@@ -49,4 +50,19 @@ export class AddAccountModalPage implements OnInit {
     })
     return await modal.present();
   }
+
+  public async addAccount() {
+
+    const account: Account = {
+      accountIcon: this.accountIcon,
+      accountName: this.accountName,
+      balance: this.balance,
+      created: new Date(),
+      owner: this.authService.getUserUid() // update to displayname etc
+    }
+    await this.firestoreService.addToCollection('accounts', account);
+    this.modalController.dismiss();
+  }
+
+  
 }

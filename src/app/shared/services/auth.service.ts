@@ -21,6 +21,7 @@ export class AuthService {
      return this.firebaseUser.uid;
    }
 
+
    private subscribeToAuthState(): void {
     this.firebaseAuthState$.subscribe(async (firebaseUser: firebase.User) => {
       if (firebaseUser) {
