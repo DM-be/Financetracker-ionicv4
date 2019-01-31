@@ -18,11 +18,14 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit() {
     this.expenses$.subscribe((expenses: Expense []) => {
+      this.totalCost = 0; // needs to be reset on a new emit of expenses array
       expenses.forEach((expense: Expense) => {
         this.totalCost += expense.cost;
       })
     });
   }
+
+  
 
 
 }

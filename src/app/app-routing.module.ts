@@ -6,6 +6,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'add-expense-modal', loadChildren: './modals/add-expense-modal/add-expense-modal.module#AddExpenseModalPageModule' },
+  { path: 'add-account-modal', loadChildren: './modals/add-account-modal/add-account-modal.module#AddAccountModalPageModule' },
+  { path: 'select-icon-modal', loadChildren: './modals/select-icon-modal/select-icon-modal.module#SelectIconModalPageModule' },
 ];
 @NgModule({
   imports: [

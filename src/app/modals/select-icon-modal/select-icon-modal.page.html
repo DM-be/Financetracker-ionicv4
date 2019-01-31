@@ -1,0 +1,9 @@
+<ion-content padding>
+
+  <ion-grid>
+    <ion-row *ngFor="let row of icons; let i = index">
+      <ion-col *ngFor="let iconName of row" text-center><ion-icon [name]="iconName" (click)="dismissWithSelectedIcon(iconName)"></ion-icon></ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

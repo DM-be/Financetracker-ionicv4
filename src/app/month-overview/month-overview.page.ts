@@ -1,3 +1,4 @@
+import { AddAccountModalPage } from './../modals/add-account-modal/add-account-modal.page';
 import { Expense } from './../shared/models/Expense';
 import { Account } from "./../shared/models/Account";
 import { Category } from "./../shared/models/Category";
@@ -55,6 +56,13 @@ export class MonthOverviewPage implements OnInit {
   async addExpenseModal() {
     const modal = await this.modalController.create({
       component: AddExpenseModalPage
+    });
+    return await modal.present();
+  }
+
+  async addAccountModal() {
+    const modal = await this.modalController.create({
+      component: AddAccountModalPage
     });
     return await modal.present();
   }
