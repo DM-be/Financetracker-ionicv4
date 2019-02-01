@@ -1,7 +1,7 @@
 export interface Account {
     owner: string;
     accountName: string;
-    balance: string;
+    balance: number;
     accountIcon: string;
     created: Date;
     initialBalanceInSelectedMonth?: number; // the final balance of the previous month

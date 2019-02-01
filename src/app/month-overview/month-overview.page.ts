@@ -1,5 +1,5 @@
-import { AddAccountModalPage } from './../modals/add-account-modal/add-account-modal.page';
-import { Expense } from './../shared/models/Expense';
+import { AddAccountModalPage } from "./../modals/add-account-modal/add-account-modal.page";
+import { Expense } from "./../shared/models/Expense";
 import { Account } from "./../shared/models/Account";
 import { Category } from "./../shared/models/Category";
 import { AddExpenseModalPage } from "./../modals/add-expense-modal/add-expense-modal.page";
@@ -23,31 +23,30 @@ export class MonthOverviewPage implements OnInit {
     public momentService: MomentService,
     private firestoreService: FirestoreService,
     public modalController: ModalController
-  ) {
-    
-  }
+  ) {}
 
   updateObservables() {
-    
+    const selectedDate: Date = this.momentService.getSelectedDate();
     this.accounts$ = this.firestoreService.getCollectionObservable("accounts");
     this.expenses$ = this.firestoreService.getFilteredCollectionObservableBetweenDates(
       "expenses",
-      this.momentService.getStartOfMonthDate(),
-      this.momentService.getEndOfMonthDate()
+      this.momentService.getStartOfMonthDate(selectedDate),
+      this.momentService.getEndOfMonthDate(selectedDate)
     );
     this.categories$ = this.firestoreService.getCollectionObservable(
       "categories"
     );
-
-    
-    
-    
-    
   }
 
   getExpenses$ForCategory(categoryName: string) {
-    return this.firestoreService.getFilteredCollectionObservableBetweenDatesAndField('expenses',   this.momentService.getStartOfMonthDate(),
-    this.momentService.getEndOfMonthDate(), 'categoryName', categoryName, '==' );
+    return this.firestoreService.getFilteredCollectionObservableBetweenDatesAndField(
+      "expenses",
+      this.momentService.getStartOfMonthDate(selectedDate),
+      this.momentService.getEndOfMonthDate(selectedDate),
+      "categoryName",
+      categoryName,
+      "=="
+    );
   }
 
   ngOnInit() {
@@ -69,19 +68,18 @@ export class MonthOverviewPage implements OnInit {
 
   getAmountSpentInCategory(category: Category) {
     let amount = 0;
-    console.log('in amountspent')
-    this.expenses$.subscribe((expenses: Expense []) => {
-      console.log('in sub')
-      if(expenses) {
+    console.log("in amountspent");
+    this.expenses$.subscribe((expenses: Expense[]) => {
+      console.log("in sub");
+      if (expenses) {
         expenses.forEach((expense: Expense) => {
-          if (expense.categoryName === category.categoryName)
-          {
-            console.log('c')
+          if (expense.categoryName === category.categoryName) {
+            console.log("c");
             amount += expense.cost;
           }
         });
       }
-    })
+    });
     return amount;
   }
 

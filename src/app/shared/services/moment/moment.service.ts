@@ -22,6 +22,10 @@ export class MomentService {
   private initMinDate() {
   }
 
+  public getSelectedDate() {
+    return moment(this.selectedDate).toDate();
+  }
+
 
 
   getMaxDate() {
@@ -30,16 +34,20 @@ export class MomentService {
   getMinDate() {
   }
 
-  getStartOfMonthDate() {
-    return moment(this.selectedDate).startOf('month').toDate();
+  public getStartOfMonthDate(date: string | Date) {
+    return moment(date).startOf('month').toDate();
   }
 
-  getEndOfMonthDate() {
-    return moment(this.selectedDate).endOf('month').toDate();
+  public getEndOfMonthDate(date: Date): Date {
+    return moment(date).endOf('month').toDate();
   }
 
-  getCurrentDateObject(): moment.Moment{
-    return moment();
+  public getCurrentDateObject(): Date {
+    return moment().toDate();
+  }
+
+  public isSelectedDateEqualToCurrentDate(): boolean {
+    return this.selectedDate === moment().format('YYYY-MM');
   }
 
 }
