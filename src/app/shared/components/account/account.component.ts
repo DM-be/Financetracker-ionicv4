@@ -4,6 +4,7 @@ import { FirestoreService } from "./../../services/firestore/firestore.service";
 import { MomentService } from "./../../services/moment/moment.service";
 import { Account } from "./../../models/Account";
 import { Component, OnInit, Input } from "@angular/core";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-account",
@@ -17,46 +18,68 @@ export class AccountComponent implements OnInit {
     private readonly firestoreService: FirestoreService
   ) {}
 
-  ngOnInit() {}
+  public ngOnInit() {
+    this.setBalances();
+  }
 
-  public setCurrentBalanceInSelectedMonth() {
+  public async setBalances() {
+    const startingMonthDate = this.momentService.getSelectedDate();
+    const endingMonthDate = this.momentService.getCurrentDateObject();
+    const nextMonthDate = this.momentService.getNextMonthOfDate(
+      startingMonthDate
+    );
+
+    this.account.initialBalanceInSelectedMonth = await this.calculateInitialBalanceInMonth(
+      startingMonthDate,
+      endingMonthDate,
+      this.account
+    );
     if (this.momentService.isSelectedDateEqualToCurrentDate()) {
-      this.account.currentBalanceInSelectedMonth = this.account.balance;
+      this.account.finalBalanceInSelectedMonth = this.account.balance;
     } else {
-      this.account.currentBalanceInSelectedMonth = this.calculateCurrentBalanceInSelectedMonth();
+      this.account.finalBalanceInSelectedMonth = await this.calculateInitialBalanceInMonth(
+        nextMonthDate,
+        endingMonthDate,
+        this.account
+      );
+      // final balance is initial balance of the next month
     }
   }
 
-  async calculateCurrentBalanceInSelectedMonth(): number {
-    let start = this.momentService.getEndOfMonthDate(this.momentService.getCurrentDateObject());
-    
-    let end = this.momentService.getSelectedDate();
-
-    // get expenses
-    const expenses: Expense[] = await this.firestoreService
+  public async calculateInitialBalanceInMonth(
+    startingMonth: Date,
+    endingMonth: Date,
+    account: Account
+  ): Promise<number> {
+    const start = this.momentService.getStartOfMonthDate(startingMonth);
+    const end = this.momentService.getEndOfMonthDate(endingMonth);
+    const expensesPromise: Promise<Expense[]> = this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "expenses",
         start,
         end,
         "accountName",
-        this.account.accountName,
+        account.accountName,
         "=="
       )
+      .pipe(take(1))
       .toPromise();
-    const transactions: Transaction [] = await this.firestoreService
+    const transactionsPromise: Promise<Transaction[]> = this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "transactions",
         start,
         end,
         "accountName",
-        this.account.accountName,
+        account.accountName,
         "=="
       )
+      .pipe(take(1))
       .toPromise();
-
-      const expensesCost = this.calculateExpensesCost(expenses);
-      const transactionsBalance = this.calculateTransactions(transactions);
-      
+    const expensesTotal = this.calculateExpensesCost(await expensesPromise);
+    const transactionsTotal = this.calculateTransactions(
+      await transactionsPromise
+    );
+    return account.balance + (expensesTotal + transactionsTotal);
   }
 
   private calculateExpensesCost(expenses: Expense[]): number {
@@ -69,9 +92,9 @@ export class AccountComponent implements OnInit {
     let total = 0;
     transactions.forEach((transaction: Transaction) => {
       if (transaction.operation === "-") {
-        total -= transaction.amount;
-      } else {
         total += transaction.amount;
+      } else {
+        total -= transaction.amount;
       }
     });
     return total;

@@ -2,8 +2,9 @@
   <ion-item tappable>
     <ion-icon [name]="account.accountIcon" slot="start"></ion-icon>
     <ion-label>{{account.accountName}}</ion-label>
+    <div *ngIf="account.initialBalanceInSelectedMonth; else loading"></div>
     <ion-badge slot="end">{{account.initialBalanceInSelectedMonth}}</ion-badge>
-    <ion-badge slot="end">{{account.currentBalanceInSelectedMonth}}</ion-badge>
+    <ion-badge slot="end">{{account.finalBalanceInSelectedMonth}}</ion-badge>
   </ion-item>
 
   <ion-item-options side="start">

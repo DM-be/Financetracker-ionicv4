@@ -39,6 +39,7 @@ export class MonthOverviewPage implements OnInit {
   }
 
   getExpenses$ForCategory(categoryName: string) {
+    const selectedDate: Date = this.momentService.getSelectedDate();
     return this.firestoreService.getFilteredCollectionObservableBetweenDatesAndField(
       "expenses",
       this.momentService.getStartOfMonthDate(selectedDate),
@@ -66,22 +67,7 @@ export class MonthOverviewPage implements OnInit {
     return await modal.present();
   }
 
-  getAmountSpentInCategory(category: Category) {
-    let amount = 0;
-    console.log("in amountspent");
-    this.expenses$.subscribe((expenses: Expense[]) => {
-      console.log("in sub");
-      if (expenses) {
-        expenses.forEach((expense: Expense) => {
-          if (expense.categoryName === category.categoryName) {
-            console.log("c");
-            amount += expense.cost;
-          }
-        });
-      }
-    });
-    return amount;
-  }
+  
 
   deleteCategory(category: Category) {
     console.log(category);

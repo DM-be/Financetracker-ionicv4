@@ -46,6 +46,10 @@ export class MomentService {
     return moment().toDate();
   }
 
+  public getNextMonthOfDate(date: Date): Date {
+    return moment(date).add(1, 'M').toDate();
+  }
+
   public isSelectedDateEqualToCurrentDate(): boolean {
     return this.selectedDate === moment().format('YYYY-MM');
   }

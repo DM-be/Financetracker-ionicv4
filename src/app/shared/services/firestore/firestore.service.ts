@@ -35,6 +35,21 @@ export class FirestoreService {
     ).valueChanges();
   }
 
+
+
+  public getFilteredCollectionObservableBetweenDatesAndFieldInPromise(
+    collection: string,
+    start: Date,
+    end: Date,
+    fieldPath: string,
+    fieldValue: string,
+    opStr: any
+  ): Promise<any []> {
+    return this._firestore.collection(collection, ref =>
+      ref.where("created", ">", start).where("created", "<", end).where(fieldPath, opStr, fieldValue).orderBy('created')
+    ).valueChanges().toPromise();
+  }
+
   public async addToCollection(collection: string, object: any): Promise<void> {
     try {
       await this._firestore.collection(collection).add(object);
