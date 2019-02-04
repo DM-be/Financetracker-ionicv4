@@ -1,10 +1,6 @@
 import { Injectable } from "@angular/core";
-import {
-  AngularFirestore,
-  AngularFirestoreCollection
-} from "@angular/fire/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { Observable } from "rxjs";
-import { firestore } from "firebase";
 
 @Injectable({
   providedIn: "root"
@@ -16,10 +12,15 @@ export class FirestoreService {
     collection: string,
     start: Date,
     end: Date
-  ): Observable<any []> {
-    return this._firestore.collection(collection, ref =>
-      ref.where("created", ">", start).where("created", "<", end).orderBy('created')
-    ).valueChanges();
+  ): Observable<any[]> {
+    return this._firestore
+      .collection(collection, ref =>
+        ref
+          .where("created", ">", start)
+          .where("created", "<", end)
+          .orderBy("created")
+      )
+      .valueChanges();
   }
 
   public getFilteredCollectionObservableBetweenDatesAndField(
@@ -29,25 +30,16 @@ export class FirestoreService {
     fieldPath: string,
     fieldValue: string,
     opStr: any
-  ): Observable<any []> {
-    return this._firestore.collection(collection, ref =>
-      ref.where("created", ">", start).where("created", "<", end).where(fieldPath, opStr, fieldValue).orderBy('created')
-    ).valueChanges();
-  }
-
-
-
-  public getFilteredCollectionObservableBetweenDatesAndFieldInPromise(
-    collection: string,
-    start: Date,
-    end: Date,
-    fieldPath: string,
-    fieldValue: string,
-    opStr: any
-  ): Promise<any []> {
-    return this._firestore.collection(collection, ref =>
-      ref.where("created", ">", start).where("created", "<", end).where(fieldPath, opStr, fieldValue).orderBy('created')
-    ).valueChanges().toPromise();
+  ): Observable<any[]> {
+    return this._firestore
+      .collection(collection, ref =>
+        ref
+          .where("created", ">", start)
+          .where("created", "<", end)
+          .where(fieldPath, opStr, fieldValue)
+          .orderBy("created")
+      )
+      .valueChanges();
   }
 
   public async addToCollection(collection: string, object: any): Promise<void> {
@@ -58,10 +50,41 @@ export class FirestoreService {
     }
   }
 
-  public getCollectionObservable(collection: string): Observable<any []> {
+  public getCollectionObservable(collection: string): Observable<any[]> {
     return this._firestore.collection(collection).valueChanges();
   }
 
+  public async getDocumentFieldValue(
+    collection: string,
+    fieldPath: string,
+    opStr: any,
+    fieldValue: string,
+    property: string
+  ) {
+    const querySnapshot = await this._firestore
+      .collection(collection, ref => ref.where(fieldPath, opStr, fieldValue))
+      .get()
+      .toPromise();
+    const docData = querySnapshot.docs[0].data();
+    console.log(docData);
+    return docData[property];
+  }
 
-
+  public async updateDocumentWithFilter(
+    collection: string,
+    fieldPath: string,
+    opStr: any,
+    fieldValue: string,
+    updatedField: string,
+    newValue: any
+  ) {
+    const querySnapshot = await this._firestore
+      .collection(collection, ref => ref.where(fieldPath, opStr, fieldValue))
+      .get()
+      .toPromise();
+    const docRef = querySnapshot.docs[0].ref; // accountNames, categoryNames are unique
+    const obj = {};
+    obj[updatedField] = newValue;
+    await docRef.update(obj);
+  }
 }

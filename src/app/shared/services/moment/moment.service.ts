@@ -54,4 +54,9 @@ export class MomentService {
     return this.selectedDate === moment().format('YYYY-MM');
   }
 
+  public convertISOStringToDate(date: string): Date {
+    return moment(date).toDate();
+
+  }
+
 }
