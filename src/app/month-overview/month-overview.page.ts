@@ -25,6 +25,10 @@ export class MonthOverviewPage implements OnInit {
     public modalController: ModalController
   ) {}
 
+  ngOnInit() {
+    this.updateObservables();
+  }
+
   updateObservables() {
     const selectedDate: Date = this.momentService.getSelectedDate();
     this.accounts$ = this.firestoreService.getCollectionObservable("accounts");
@@ -50,9 +54,7 @@ export class MonthOverviewPage implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.updateObservables();
-  }
+  
   async addExpenseModal() {
     const modal = await this.modalController.create({
       component: AddExpenseModalPage
@@ -67,9 +69,6 @@ export class MonthOverviewPage implements OnInit {
     return await modal.present();
   }
 
-  
-
   deleteCategory(category: Category) {
-    console.log(category);
   }
 }

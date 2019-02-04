@@ -18,7 +18,9 @@
         </div>
       </div>
       <ng-template #loading>
-        <ion-item><ion-spinner></ion-spinner></ion-item>
+        <ion-item>
+          <ion-spinner></ion-spinner>
+        </ion-item>
       </ng-template>
     </ion-list>
   </ion-card>
@@ -30,11 +32,10 @@
       Categories
     </ion-item-divider>
     <ion-list>
-  
-        <div *ngIf="categories$ | async as categories; else loading">
-      <div *ngFor="let category of categories">
-       <app-category [category]="category" [expenses$]="getExpenses$ForCategory(category.categoryName)"></app-category>
-      </div>
+      <div *ngIf="categories$ | async as categories; else loading">
+        <div *ngFor="let category of categories">
+          <app-category [category]="category" [expenses$]="getExpenses$ForCategory(category.categoryName)"></app-category>
+        </div>
       </div>
     </ion-list>
   </ion-card>
