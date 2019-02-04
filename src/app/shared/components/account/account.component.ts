@@ -20,6 +20,7 @@ export class AccountComponent implements OnInit {
 
   public ngOnInit() {
     this.setBalances();
+    console.log("acc comp triggered");
   }
 
   public async setBalances() {
@@ -29,31 +30,46 @@ export class AccountComponent implements OnInit {
       startingMonthDate
     );
 
-    this.account.initialBalanceInSelectedMonth = await this.calculateInitialBalanceInMonth(
+    this.subscribeToExpenses(
       startingMonthDate,
       endingMonthDate,
-      this.account
+      this.account,
+      true
     );
+    this.subscribeToTransactions(
+      startingMonthDate,
+      endingMonthDate,
+      this.account,
+      true
+    );
+
     if (this.momentService.isSelectedDateEqualToCurrentDate()) {
       this.account.finalBalanceInSelectedMonth = this.account.balance;
     } else {
-      this.account.finalBalanceInSelectedMonth = await this.calculateInitialBalanceInMonth(
+      this.subscribeToExpenses(
         nextMonthDate,
         endingMonthDate,
-        this.account
+        this.account,
+        false
       );
-      // final balance is initial balance of the next month
+      this.subscribeToTransactions(
+        nextMonthDate,
+        endingMonthDate,
+        this.account,
+        false
+      );
     }
   }
 
-  public async calculateInitialBalanceInMonth(
+  public subscribeToExpenses(
     startingMonth: Date,
     endingMonth: Date,
-    account: Account
-  ): Promise<number> {
+    account: Account,
+    initial: boolean
+  ) {
     const start = this.momentService.getStartOfMonthDate(startingMonth);
     const end = this.momentService.getEndOfMonthDate(endingMonth);
-    const expensesPromise: Promise<Expense[]> = this.firestoreService
+    this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "expenses",
         start,
@@ -62,9 +78,35 @@ export class AccountComponent implements OnInit {
         account.accountName,
         "=="
       )
-      .pipe(take(1))
-      .toPromise();
-    const transactionsPromise: Promise<Transaction[]> = this.firestoreService
+      .subscribe((expenses: Expense[]) => {
+        const expensesTotal = this.calculateExpensesCost(expenses);
+        if (initial) {
+          if (this.account.initialBalanceInSelectedMonth) {
+            this.account.initialBalanceInSelectedMonth += expensesTotal;
+          } else {
+            this.account.initialBalanceInSelectedMonth =
+              this.account.balance + expensesTotal;
+          }
+        } else {
+          if (this.account.finalBalanceInSelectedMonth) {
+            this.account.finalBalanceInSelectedMonth += expensesTotal;
+          } else {
+            this.account.finalBalanceInSelectedMonth =
+              this.account.balance + expensesTotal;
+          }
+        }
+      });
+  }
+
+  public subscribeToTransactions(
+    startingMonth: Date,
+    endingMonth: Date,
+    account: Account,
+    initial: boolean
+  ) {
+    const start = this.momentService.getStartOfMonthDate(startingMonth);
+    const end = this.momentService.getEndOfMonthDate(endingMonth);
+    this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "transactions",
         start,
@@ -73,13 +115,24 @@ export class AccountComponent implements OnInit {
         account.accountName,
         "=="
       )
-      .pipe(take(1))
-      .toPromise();
-    const expensesTotal = this.calculateExpensesCost(await expensesPromise);
-    const transactionsTotal = this.calculateTransactions(
-      await transactionsPromise
-    );
-    return account.balance + (expensesTotal + transactionsTotal);
+      .subscribe((transactions: Transaction[]) => {
+        const transactionsTotal = this.calculateTransactions(transactions);
+        if (initial) {
+          if (this.account.initialBalanceInSelectedMonth) {
+            this.account.initialBalanceInSelectedMonth += transactionsTotal;
+          } else {
+            this.account.initialBalanceInSelectedMonth =
+              this.account.balance + transactionsTotal;
+          }
+        } else {
+          if (this.account.finalBalanceInSelectedMonth) {
+            this.account.finalBalanceInSelectedMonth += transactionsTotal;
+          } else {
+            this.account.finalBalanceInSelectedMonth =
+              this.account.balance + transactionsTotal;
+          }
+        }
+      });
   }
 
   private calculateExpensesCost(expenses: Expense[]): number {

@@ -2,23 +2,30 @@
 <ion-content padding>
   <ion-grid fixed>
       <ion-item>
-        <ion-label position="floating">Category</ion-label>
+        <ion-label>Category</ion-label>
+        <ion-select placeholder="Select a category" [(ngModel)]="categoryName">
+          <ion-select-option *ngFor="let category of categories$ | async" selected="category.categoryName" >{{category.categoryName}}</ion-select-option>
+          </ion-select>
       </ion-item>
       <ion-item>
-
+          <ion-label>Account</ion-label>
+          <ion-select placeholder="Select used account" [(ngModel)]="accountName">
+            <ion-select-option *ngFor="let account of accounts$ | async" selected="account.accountName" >{{account.accountName}}</ion-select-option>
+            </ion-select>
       </ion-item>
-      <ion-item position="fixed">
+      <ion-item>
         <ion-label>Date</ion-label>
-        <ion-datetime  displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="expense.createdDate" name="date"></ion-datetime>
+        <ion-datetime  displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="created" name="date"></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label position="floating" >Description</ion-label>
-        <ion-input text-right [(ngModel)]="expense.description" name="description"></ion-input>
+        <ion-label>Description</ion-label>
+        <ion-input text-right [(ngModel)]="description" name="description"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Cost</ion-label>
+        <ion-input name="cost" [(ngModel)]="cost" type="number"></ion-input>
       </ion-item>
-    <ion-button icon-only full no-margin >
+    <ion-button (click)="addExpense()">
       <ion-icon name="checkmark"></ion-icon>
     </ion-button>
 

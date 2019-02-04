@@ -56,7 +56,7 @@ export class AddAccountModalPage implements OnInit {
     const account: Account = {
       accountIcon: this.accountIcon,
       accountName: this.accountName,
-      balance: parseInt(this.balance,10),
+      balance: parseInt(this.balance, 10),
       created: new Date(),
       owner: this.authService.getUserUid() // update to displayname etc
     }

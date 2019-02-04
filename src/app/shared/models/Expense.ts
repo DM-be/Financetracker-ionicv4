@@ -1,7 +1,7 @@
 export interface Expense {
     description: string;
     cost: number;
-    created: string;
+    created: Date;
     categoryName: string;
     accountName: string;
 }
