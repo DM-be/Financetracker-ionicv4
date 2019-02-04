@@ -64,4 +64,8 @@ export class AddExpenseModalPage implements OnInit {
     await this.firestoreService.updateDocumentWithFilter('accounts', "accountName", "==", this.accountName, "balance", balance);
   }
 
+
+  async dismiss() {
+    await this.modalController.dismiss();    
+  }
 }

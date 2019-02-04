@@ -16,20 +16,20 @@
 
 <ion-grid fixed>
 
-    <ion-item item-end>
+    <ion-item>
       <ion-label>Account name</ion-label>
-      <ion-input text-right type="text" [(ngModel)]="accountName"  name="accountName"></ion-input>
+      <ion-input type="text" [(ngModel)]="accountName"  name="accountName" text-right></ion-input>
     </ion-item>
-    <ion-item item-end>
+    <ion-item>
       <ion-label>Account balance</ion-label>
-      <ion-input text-right type="number" [(ngModel)]="balance"  name="balance"></ion-input>
+      <ion-input type="number" [(ngModel)]="balance" name="balance" text-right></ion-input>
     </ion-item>
 
-    <ion-item tappable (click)="presentIconsModal()">
+    <ion-item tappable (click)="presentIconsModal()" >
         <ion-label>Account Icon</ion-label>
-        <ion-icon [name]="getSelectedIcon()" item-end></ion-icon>
+        <ion-icon [name]="getSelectedIcon()" slot="end"></ion-icon>
       </ion-item>
-  <ion-button [disabled]="notFilledIn()" (click)="addAccount()" full no-margin icon-only><ion-icon name="checkmark"></ion-icon></ion-button>
+  <ion-button expand="block" [disabled]="notFilledIn()" (click)="addAccount()"><ion-icon name="checkmark"></ion-icon></ion-button>
 
 
 </ion-grid>

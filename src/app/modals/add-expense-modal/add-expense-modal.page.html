@@ -1,3 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Add a new expense
+    </ion-title>
+    <ion-buttons>
+      <ion-button (click)="dismiss()" slot="icon-only">
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
 
 <ion-content padding>
   <ion-grid fixed>
@@ -15,17 +30,17 @@
       </ion-item>
       <ion-item>
         <ion-label>Date</ion-label>
-        <ion-datetime  displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="created" name="date"></ion-datetime>
+        <ion-datetime displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="created" name="date"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Description</ion-label>
-        <ion-input text-right [(ngModel)]="description" name="description"></ion-input>
+        <ion-input [(ngModel)]="description" name="description" text-right ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Cost</ion-label>
-        <ion-input name="cost" [(ngModel)]="cost" type="number"></ion-input>
+        <ion-input name="cost" [(ngModel)]="cost" type="number" text-right></ion-input>
       </ion-item>
-    <ion-button (click)="addExpense()">
+    <ion-button (click)="addExpense()" expand="block">
       <ion-icon name="checkmark"></ion-icon>
     </ion-button>
 
