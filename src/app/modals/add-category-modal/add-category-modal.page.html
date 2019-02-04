@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+        Add a new category
+      </ion-title>
+      <ion-buttons start>
+        <ion-button icon-only (click)="dismiss()">
+          <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+        </ion-button>
+  
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+  
+  <ion-grid fixed>
+  
+      <ion-item item-end>
+        <ion-label>Category name</ion-label>
+        <ion-input text-right type="text" [(ngModel)]="categoryName"  name="accountName"></ion-input>
+      </ion-item>
+      <ion-item tappable (click)="presentIconsModal()">
+          <ion-label>Category Icon</ion-label>
+          <ion-icon [name]="getSelectedIcon()" item-end></ion-icon>
+        </ion-item>
+    <ion-button [disabled]="notFilledIn()" (click)="addCategory()" full no-margin icon-only><ion-icon name="checkmark"></ion-icon></ion-button>
+  
+  
+  </ion-grid>
+  
+  </ion-content>

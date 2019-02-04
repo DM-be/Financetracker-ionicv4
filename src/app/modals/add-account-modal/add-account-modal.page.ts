@@ -52,7 +52,6 @@ export class AddAccountModalPage implements OnInit {
   }
 
   public async addAccount() {
-
     const account: Account = {
       accountIcon: this.accountIcon,
       accountName: this.accountName,
@@ -61,8 +60,6 @@ export class AddAccountModalPage implements OnInit {
       owner: this.authService.getUserUid() // update to displayname etc
     }
     await this.firestoreService.addToCollection('accounts', account);
-    this.modalController.dismiss();
+    await this.modalController.dismiss();
   }
-
-  
 }

@@ -8,6 +8,7 @@ import { MomentService } from "./../shared/services/moment/moment.service";
 import { Component, OnInit } from "@angular/core";
 import { ModalController } from "@ionic/angular";
 import { Observable } from "rxjs";
+import { AddCategoryModalPage } from "../modals/add-category-modal/add-category-modal.page";
 
 @Component({
   selector: "app-month-overview",
@@ -65,6 +66,13 @@ export class MonthOverviewPage implements OnInit {
   async addAccountModal() {
     const modal = await this.modalController.create({
       component: AddAccountModalPage
+    });
+    return await modal.present();
+  }
+
+  async addCategoryModal() {
+    const modal = await this.modalController.create({
+      component: AddCategoryModalPage
     });
     return await modal.present();
   }

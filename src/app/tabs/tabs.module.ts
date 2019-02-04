@@ -1,7 +1,9 @@
+import { AddCategoryModalPageModule } from './../modals/add-category-modal/add-category-modal.module';
 import { SelectIconModalPage } from './../modals/select-icon-modal/select-icon-modal.page';
 import { AddAccountModalPage } from './../modals/add-account-modal/add-account-modal.page';
 import { SelectIconModalPageModule } from './../modals/select-icon-modal/select-icon-modal.module';
 import { AddExpenseModalPage } from './../modals/add-expense-modal/add-expense-modal.page';
+import { AddCategoryModalPage } from './../modals/add-category-modal/add-category-modal.page';
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -20,9 +22,11 @@ import { AddAccountModalPageModule } from '../modals/add-account-modal/add-accou
     TabsPageRoutingModule,
     AddExpenseModalPageModule,
     AddAccountModalPageModule,
+    AddCategoryModalPageModule,
+
     SelectIconModalPageModule
   ],
   declarations: [TabsPage],
-  entryComponents: [AddExpenseModalPage, AddAccountModalPage, SelectIconModalPage]
+  entryComponents: [AddExpenseModalPage, AddAccountModalPage, SelectIconModalPage, AddCategoryModalPage]
 })
 export class TabsPageModule {}
