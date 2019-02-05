@@ -59,7 +59,7 @@ export class AddAccountModalPage implements OnInit {
       created: new Date(),
       owner: this.authService.getUserUid() // update to displayname etc
     }
-    await this.firestoreService.addToCollection('accounts', account);
+    await this.firestoreService.addToCollection('accounts', account, account.accountName);
     await this.modalController.dismiss();
   }
 }

@@ -1,3 +1,4 @@
+import { Filter } from './../shared/models/Filter';
 import { AddAccountModalPage } from "./../modals/add-account-modal/add-account-modal.page";
 import { Expense } from "./../shared/models/Expense";
 import { Account } from "./../shared/models/Account";
@@ -41,17 +42,21 @@ export class MonthOverviewPage implements OnInit {
     this.categories$ = this.firestoreService.getCollectionObservable(
       "categories"
     );
+    console.log(this.accounts$)
   }
 
   getExpenses$ForCategory(categoryName: string) {
+    const filter: Filter = {
+      fieldPath: "categoryName",
+      fieldValue: categoryName,
+      opStr: "=="
+    }
     const selectedDate: Date = this.momentService.getSelectedDate();
     return this.firestoreService.getFilteredCollectionObservableBetweenDatesAndField(
       "expenses",
       this.momentService.getStartOfMonthDate(selectedDate),
       this.momentService.getEndOfMonthDate(selectedDate),
-      "categoryName",
-      categoryName,
-      "=="
+      filter
     );
   }
 

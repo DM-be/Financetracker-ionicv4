@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Add a transaction
+    </ion-title>
+    <ion-buttons start>
+      <ion-button icon-only (click)="dismiss()">
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid fixed>
+    <ion-item>
+      <ion-label>Sender</ion-label>
+      <ion-select placeholder="Select sending account" [(ngModel)]="sendingAccountName">
+        <ion-select-option *ngFor="let account of accounts$ | async" selected="account.accountName" >{{account.accountName}}</ion-select-option>
+        </ion-select>
+    </ion-item>
+    <ion-item>
+        <ion-label>Reciever</ion-label>
+        <ion-select placeholder="Select recieving account" [(ngModel)]="recievingAccountName">
+          <ion-select-option *ngFor="let account of accounts$ | async" selected="account.accountName" >{{account.accountName}}</ion-select-option>
+          </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="DDD DD MMM YY HH:mm" pickerFormat="DD MM YY HH:mm" [(ngModel)]="created" name="date"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Amount</ion-label>
+      <ion-input name="cost" [(ngModel)]="amount" type="number" text-right></ion-input>
+    </ion-item>
+  <ion-button (click)="addTransaction()" expand="block">
+    <ion-icon name="checkmark"></ion-icon>
+  </ion-button>
+
+</ion-grid>
+</ion-content>

@@ -34,12 +34,10 @@ export class AddExpenseModalPage implements OnInit {
 
   private subcribeToAccounts() {
    this.accounts$ = this.firestoreService.getCollectionObservable('accounts');
-
   } 
 
   private subscribeToCategories() {
     this.categories$ = this.firestoreService.getCollectionObservable('categories');
-
   }
 
   public async addExpense() {
@@ -57,15 +55,13 @@ export class AddExpenseModalPage implements OnInit {
   }
 
   private async updateBalanceInAccount() {
-    let balance = await this.firestoreService.getDocumentFieldValue('accounts', "accountName", "==", this.accountName, "balance");
-    console.log(balance)
+    let balance = await this.firestoreService.getDocumentFieldValue('accounts', 'balance', this.accountName);
     balance -= parseInt(this.cost, 10);
-    console.log(balance)
-    await this.firestoreService.updateDocumentWithFilter('accounts', "accountName", "==", this.accountName, "balance", balance);
+    await this.firestoreService.updateDocumentFieldValue('accounts', 'balance', balance, this.accountName);
   }
 
 
   async dismiss() {
-    await this.modalController.dismiss();    
+    await this.modalController.dismiss();
   }
 }

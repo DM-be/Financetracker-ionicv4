@@ -1,18 +1,25 @@
+import { Filter } from './../../models/Filter';
 import { Transaction } from "./../../models/Transaction";
 import { Expense } from "./../../models/Expense";
 import { FirestoreService } from "./../../services/firestore/firestore.service";
 import { MomentService } from "./../../services/moment/moment.service";
 import { Account } from "./../../models/Account";
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { take } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-account",
   templateUrl: "./account.component.html",
   styleUrls: ["./account.component.scss"]
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
   @Input() public account: Account;
+  private expensesFromSelectedDateToCurrentDate: Subscription;
+  private expensesFromSelectedDatePlusAMonth: Subscription;
+  private transactionsFromSelectedDateToCurrentDate: Subscription;
+  private transactionsFromSelectedDatePlusAMonth: Subscription;
+
   constructor(
     private readonly momentService: MomentService,
     private readonly firestoreService: FirestoreService
@@ -23,19 +30,25 @@ export class AccountComponent implements OnInit {
     console.log("acc comp triggered");
   }
 
+  ngOnDestroy() {
+    this.expensesFromSelectedDatePlusAMonth.unsubscribe();
+    this.expensesFromSelectedDateToCurrentDate.unsubscribe();
+  }
+
   public async setBalances() {
     const startingMonthDate = this.momentService.getSelectedDate();
     const endingMonthDate = this.momentService.getCurrentDateObject();
-    const nextMonthDate = this.momentService.getNextMonthOfDate(
+    const selectedDatePlusAmonth = this.momentService.getNextMonthOfDate(
       startingMonthDate
     );
 
-    this.subscribeToExpenses(
+    this.expensesFromSelectedDateToCurrentDate = this.subscribeToExpenses(
       startingMonthDate,
       endingMonthDate,
       this.account,
       true
     );
+
     this.subscribeToTransactions(
       startingMonthDate,
       endingMonthDate,
@@ -46,14 +59,14 @@ export class AccountComponent implements OnInit {
     if (this.momentService.isSelectedDateEqualToCurrentDate()) {
       this.account.finalBalanceInSelectedMonth = this.account.balance;
     } else {
-      this.subscribeToExpenses(
-        nextMonthDate,
+      this.expensesFromSelectedDatePlusAMonth = this.subscribeToExpenses(
+        selectedDatePlusAmonth,
         endingMonthDate,
         this.account,
         false
       );
       this.subscribeToTransactions(
-        nextMonthDate,
+        selectedDatePlusAmonth,
         endingMonthDate,
         this.account,
         false
@@ -66,27 +79,28 @@ export class AccountComponent implements OnInit {
     endingMonth: Date,
     account: Account,
     initial: boolean
-  ) {
+  ): Subscription {
     const start = this.momentService.getStartOfMonthDate(startingMonth);
     const end = this.momentService.getEndOfMonthDate(endingMonth);
-    this.firestoreService
+    const filter: Filter = {
+      fieldPath: "accountName",
+      fieldValue: account.accountName,
+      opStr: "=="
+    }
+    return this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "expenses",
         start,
         end,
-        "accountName",
-        account.accountName,
-        "=="
+       filter
       )
       .subscribe((expenses: Expense[]) => {
+        console.log(expenses)
+
         const expensesTotal = this.calculateExpensesCost(expenses);
+        console.log(expensesTotal)
         if (initial) {
-          if (this.account.initialBalanceInSelectedMonth) {
-            this.account.initialBalanceInSelectedMonth += expensesTotal;
-          } else {
-            this.account.initialBalanceInSelectedMonth =
-              this.account.balance + expensesTotal;
-          }
+          this.combineExpensesAndTransactions(expensesTotal);
         } else {
           if (this.account.finalBalanceInSelectedMonth) {
             this.account.finalBalanceInSelectedMonth += expensesTotal;
@@ -98,6 +112,18 @@ export class AccountComponent implements OnInit {
       });
   }
 
+  public combineExpensesAndTransactions(number: number)
+   {
+     if(this.account.initialBalanceInSelectedMonth === undefined)
+     {
+       console.log('initialbalance undef')
+       this.account.initialBalanceInSelectedMonth = this.account.balance + number;
+     }
+     else {
+       this.account.initialBalanceInSelectedMonth += number;
+     }
+   }
+
   public subscribeToTransactions(
     startingMonth: Date,
     endingMonth: Date,
@@ -106,14 +132,17 @@ export class AccountComponent implements OnInit {
   ) {
     const start = this.momentService.getStartOfMonthDate(startingMonth);
     const end = this.momentService.getEndOfMonthDate(endingMonth);
-    this.firestoreService
+    const filter: Filter = {
+      fieldPath: "accountName",
+      fieldValue: account.accountName,
+      opStr: "=="
+    }
+    return this.firestoreService
       .getFilteredCollectionObservableBetweenDatesAndField(
         "transactions",
         start,
         end,
-        "accountName",
-        account.accountName,
-        "=="
+        filter
       )
       .subscribe((transactions: Transaction[]) => {
         const transactionsTotal = this.calculateTransactions(transactions);
