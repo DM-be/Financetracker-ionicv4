@@ -27,7 +27,7 @@ export class AddCategoryModalPage implements OnInit {
       categoryIcon: this.categoryIcon,
       created: new Date()
     }
-    await this.firestoreService.addToCollection('categories', category);
+    await this.firestoreService.addToCollection('categories', category, category.categoryName);
     await this.modalController.dismiss();
   }
 

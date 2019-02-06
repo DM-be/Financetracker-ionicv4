@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'add-account-modal', loadChildren: './modals/add-account-modal/add-account-modal.module#AddAccountModalPageModule' },
   { path: 'select-icon-modal', loadChildren: './modals/select-icon-modal/select-icon-modal.module#SelectIconModalPageModule' },
   { path: 'add-category-modal', loadChildren: './modals/add-category-modal/add-category-modal.module#AddCategoryModalPageModule' },
-  { path: 'add-transaction', loadChildren: './modals/add-transaction/add-transaction.module#AddTransactionPageModule' },
+  { path: 'add-transaction-modal', loadChildren: './modals/add-transaction-modal/add-transaction-modal.module#AddTransactionModalPageModule' },
 ];
 @NgModule({
   imports: [

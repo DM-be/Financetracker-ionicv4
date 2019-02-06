@@ -1,3 +1,5 @@
+import { AddTransactionModalPage } from './../modals/add-transaction-modal/add-transaction-modal.page';
+import { AddTransactionModalPageModule } from './../modals/add-transaction-modal/add-transaction-modal.module';
 import { AddCategoryModalPageModule } from './../modals/add-category-modal/add-category-modal.module';
 import { SelectIconModalPage } from './../modals/select-icon-modal/select-icon-modal.page';
 import { AddAccountModalPage } from './../modals/add-account-modal/add-account-modal.page';
@@ -14,6 +16,8 @@ import { TabsPage } from './tabs.page';
 import { AddExpenseModalPageModule } from '../modals/add-expense-modal/add-expense-modal.module';
 import { AddAccountModalPageModule } from '../modals/add-account-modal/add-account-modal.module';
 
+
+// move to correct tab for the modals
 @NgModule({
   imports: [
     IonicModule,
@@ -23,10 +27,10 @@ import { AddAccountModalPageModule } from '../modals/add-account-modal/add-accou
     AddExpenseModalPageModule,
     AddAccountModalPageModule,
     AddCategoryModalPageModule,
-
+    AddTransactionModalPageModule,
     SelectIconModalPageModule
   ],
   declarations: [TabsPage],
-  entryComponents: [AddExpenseModalPage, AddAccountModalPage, SelectIconModalPage, AddCategoryModalPage]
+  entryComponents: [AddExpenseModalPage, AddAccountModalPage, SelectIconModalPage, AddCategoryModalPage, AddTransactionModalPage]
 })
 export class TabsPageModule {}

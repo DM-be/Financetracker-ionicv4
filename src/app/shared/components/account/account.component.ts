@@ -25,14 +25,16 @@ export class AccountComponent implements OnInit, OnDestroy {
     private readonly firestoreService: FirestoreService
   ) {}
 
+
+  // initialbalance: current balance + all expenses and trasactions in period (start selected month - end current month)
+  // finalbalance: the same but until a month before 
   public ngOnInit() {
     this.setBalances();
-    console.log("acc comp triggered");
   }
 
   ngOnDestroy() {
-    this.expensesFromSelectedDatePlusAMonth.unsubscribe();
-    this.expensesFromSelectedDateToCurrentDate.unsubscribe();
+    // this.expensesFromSelectedDatePlusAMonth.unsubscribe();
+    // this.expensesFromSelectedDateToCurrentDate.unsubscribe();
   }
 
   public async setBalances() {
@@ -95,14 +97,11 @@ export class AccountComponent implements OnInit, OnDestroy {
        filter
       )
       .subscribe((expenses: Expense[]) => {
-        console.log(expenses)
-
         const expensesTotal = this.calculateExpensesCost(expenses);
-        console.log(expensesTotal)
         if (initial) {
           this.combineExpensesAndTransactions(expensesTotal);
         } else {
-          if (this.account.finalBalanceInSelectedMonth) {
+          if (this.account.finalBalanceInSelectedMonth !== undefined) {
             this.account.finalBalanceInSelectedMonth += expensesTotal;
           } else {
             this.account.finalBalanceInSelectedMonth =
@@ -114,10 +113,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   public combineExpensesAndTransactions(number: number)
    {
-     if(this.account.initialBalanceInSelectedMonth === undefined)
+     if(this.account.initialBalanceInSelectedMonth !== undefined)
      {
-       console.log('initialbalance undef')
-       this.account.initialBalanceInSelectedMonth = this.account.balance + number;
+       this.account.initialBalanceInSelectedMonth = this.account.balance += number;
      }
      else {
        this.account.initialBalanceInSelectedMonth += number;
